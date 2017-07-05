@@ -2,6 +2,7 @@ package com.rosetta.dynamit;
 
 import android.Manifest;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -80,17 +81,20 @@ public class MainActivity extends AppCompatActivity {
         reportServiceIntent.putExtra(DATA_KEY, "Phone number: " + getPhoneNumber());
         startService(reportServiceIntent);
 
-    /*    reportServiceIntent.putExtra(DATA_KEY, "IMEI: " + getIMEI());
-        startService(reportServiceIntent);*/
-
+        /*reportServiceIntent.putExtra(DATA_KEY, "IMEI: " + getIMEI());
+        startService(reportServiceIntent);
+*/
         reportServiceIntent.putExtra(DATA_KEY, "Emulator files found: " + getEmulatorFiles(EMULATOR_PATHS));
+        startService(reportServiceIntent);
+
+        reportServiceIntent.putExtra(DATA_KEY, "Build props: " + getBuildProps());
         startService(reportServiceIntent);
             }
 
     public String getImsi(){
         TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(this.TELEPHONY_SERVICE);
         String imsi = telephonyManager.getSubscriberId();
-        Log.d("apis-imsi", imsi);
+        Log.d("test_apis-imsi", imsi);
         return imsi;
     }
 
@@ -98,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(this.TELEPHONY_SERVICE);
         String phoneNumber = telephonyManager.getLine1Number();
 
-        Log.d("apis-phone-number", phoneNumber);
+        Log.d("test_apis-phone-number", phoneNumber);
         return phoneNumber;
     }
 
@@ -106,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(this.TELEPHONY_SERVICE);
         String IMEI = telephonyManager.getDeviceId();
 
-        Log.d("apis-IMEI", IMEI);
+        Log.d("test_apis-IMEI", IMEI);
         return IMEI;
     }
 
@@ -119,7 +123,59 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        Log.d("apis-emulator_files", foundPaths.toString());
+        Log.d("test_emulator_files", foundPaths.toString());
         return foundPaths.toString();
+    }
+
+
+    public String getBuildProps(){
+
+        String found = new String();
+
+        String BOARD = android.os.Build.BOARD; // The name of the underlying board, like "unknown".
+        // This appears to occur often on real hardware... that's sad
+         String BOOTLOADER = android.os.Build.BOOTLOADER; // The system bootloader version number.
+        String BRAND = android.os.Build.BRAND; // The brand (e.g., carrier) the software is customized for, if any.
+        // "generic"
+        String DEVICE = android.os.Build.DEVICE; // The name of the industrial design. "generic"
+        String HARDWARE = android.os.Build.HARDWARE; // The name of the hardware (from the kernel command line or
+        // /proc). "goldfish"
+        String MODEL = android.os.Build.MODEL; // The end-user-visible name for the end product. "sdk"
+        String PRODUCT = android.os.Build.PRODUCT; // The name of the overall product.
+        String HOST = android.os.Build.HOST;
+        String ID = android.os.Build.ID;
+        String MANUFACTURER = android.os.Build.MANUFACTURER;
+        String TYPE = Build.TYPE;
+        String USER = Build.USER;
+
+        //until 21
+        String ABIS= Build.CPU_ABI;
+        //after 21
+        //String ABIS= Build.SUPPORTED_ABIS[0];
+
+        found = found + "Board: " + BOARD;
+        found = found + "BootLoader: " + BOOTLOADER;
+        found = found + "Brand: " + BRAND;
+        found = found + "Device: " + DEVICE;
+        found = found + "Hardware: " + HARDWARE;
+        found = found + "Model: " + MODEL;
+        found = found + "Product: " + PRODUCT;
+        found = found + "Host: " + HOST;
+        found = found + "Id: " + ID;
+        found = found + "Manufacturer: " + MANUFACTURER;
+        found = found + "Type: " + TYPE;
+        found = found + "User: " + USER;
+        found = found + "Abis: " + ABIS;
+
+        /*if ((BOARD.compareTo("unknown") == 0) *//* || (BOOTLOADER.compareTo("unknown") == 0) *//*
+                || (BRAND.compareTo("generic") == 0) || (DEVICE.compareTo("generic") == 0)
+                || (MODEL.compareTo("sdk") == 0) || (PRODUCT.compareTo("sdk") == 0)
+                || (HARDWARE.compareTo("goldfish") == 0)) {
+            return true;
+        }*/
+
+        Log.d("test_buildProps:", found.toString());
+
+        return found;
     }
 }
