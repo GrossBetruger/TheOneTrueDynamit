@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.lang.reflect.Array;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void prepareAndReport(Intent reportIntent, String key, String data){
+        reportIntent.putExtra(DATA_KEY, key + ":" + data);
+        startService(reportIntent);
+    }
+
 
     public void startProbing(){
         Intent reportServiceIntent = new Intent(this, ReportService.class);
@@ -51,45 +58,78 @@ public class MainActivity extends AppCompatActivity {
 //        reportServiceIntent.putExtra(DATA_KEY, shellSudoRes);
 //        startService(reportServiceIntent);
 
-        String shellEmptyShell = Shell.sudo("");
-        reportServiceIntent.putExtra(DATA_KEY, shellEmptyShell);
-        startService(reportServiceIntent);
+        String firstDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+        Log.d("TIMESTAMP:", firstDateTimeString);
+//        reportServiceIntent.putExtra(DATA_KEY, "first time stamp: " + firstDateTimeString);
+//        startService(reportServiceIntent);
+        prepareAndReport(reportServiceIntent, "first_internal_time_stamp", firstDateTimeString);
+
+        String shellEmptyShell = Shell.sudo("whoami");
+//        reportServiceIntent.putExtra(DATA_KEY, shellEmptyShell);
+//        startService(reportServiceIntent);
+        prepareAndReport(reportServiceIntent, "whoami", firstDateTimeString);
+
 
         String shellPSRes = Shell.userCmd("ps");
-        reportServiceIntent.putExtra(DATA_KEY, shellPSRes);
-        startService(reportServiceIntent);
+//        reportServiceIntent.putExtra(DATA_KEY, shellPSRes);
+//        startService(reportServiceIntent);
+        prepareAndReport(reportServiceIntent, "ps", shellPSRes);
+
 
         String shellLSRes = Shell.userCmd("ls");
-        reportServiceIntent.putExtra(DATA_KEY, shellLSRes);
-        startService(reportServiceIntent);
+//        reportServiceIntent.putExtra(DATA_KEY, shellLSRes);
+//        startService(reportServiceIntent);
+        prepareAndReport(reportServiceIntent, "ls", shellLSRes);
+
 
         String shellTOPRes = Shell.userCmd("top -n 1");
-        reportServiceIntent.putExtra(DATA_KEY, shellTOPRes);
-        startService(reportServiceIntent);
+//        reportServiceIntent.putExtra(DATA_KEY, shellTOPRes);
+//        startService(reportServiceIntent);
+        prepareAndReport(reportServiceIntent, "top", shellTOPRes);
+
 
         String shellWhoAmIRes = Shell.userCmd("whoami");
-        reportServiceIntent.putExtra(DATA_KEY, shellWhoAmIRes);
-        startService(reportServiceIntent);
+//        reportServiceIntent.putExtra(DATA_KEY, shellWhoAmIRes);
+//        startService(reportServiceIntent);
+        prepareAndReport(reportServiceIntent, "top", shellTOPRes);
+
 
         String shellKernelVersion = Shell.userCmd("uname -a");
-        reportServiceIntent.putExtra(DATA_KEY, shellKernelVersion);
-        startService(reportServiceIntent);
+//        reportServiceIntent.putExtra(DATA_KEY, shellKernelVersion);
+//        startService(reportServiceIntent);
+        prepareAndReport(reportServiceIntent, "kernel_version", shellKernelVersion);
 
-        reportServiceIntent.putExtra(DATA_KEY, "Imsi: " + getImsi());
-        startService(reportServiceIntent);
 
-        reportServiceIntent.putExtra(DATA_KEY, "Phone number: " + getPhoneNumber());
-        startService(reportServiceIntent);
+//        reportServiceIntent.putExtra(DATA_KEY, "IMSI:" getImsi());
+//        startService(reportServiceIntent);
+        prepareAndReport(reportServiceIntent, "IMSI", getImsi());
+
+
+ /*       reportServiceIntent.putExtra(DATA_KEY, "phone_number: " + getPhoneNumber());
+        startService(reportServiceIntent);*/
+        prepareAndReport(reportServiceIntent, "phone_number", getPhoneNumber());
+
 
         /*reportServiceIntent.putExtra(DATA_KEY, "IMEI: " + getIMEI());
         startService(reportServiceIntent);
 */
-        reportServiceIntent.putExtra(DATA_KEY, "Emulator files found: " + getEmulatorFiles(EMULATOR_PATHS));
-        startService(reportServiceIntent);
+//        reportServiceIntent.putExtra(DATA_KEY, "emulator_files: " + getEmulatorFiles(EMULATOR_PATHS));
+//        startService(reportServiceIntent);
+        prepareAndReport(reportServiceIntent, "emulator_files",  getEmulatorFiles(EMULATOR_PATHS));
 
-        reportServiceIntent.putExtra(DATA_KEY, "Build props: " + getBuildProps());
-        startService(reportServiceIntent);
-            }
+
+//        reportServiceIntent.putExtra(DATA_KEY, "build_props: " + getBuildProps());
+//        startService(reportServiceIntent);
+        prepareAndReport(reportServiceIntent, "build_props", getBuildProps());
+
+
+
+        String secondDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+//        reportServiceIntent.putExtra(DATA_KEY, "second_internal_time_stamp: " + secondDateTimeString);
+//        startService(reportServiceIntent);
+        prepareAndReport(reportServiceIntent, "second_internal_time_stamp", secondDateTimeString);
+
+    }
 
     public String getImsi(){
         TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(this.TELEPHONY_SERVICE);

@@ -13,7 +13,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+
+
 public class ReportService extends Service {
+
+    String serverUrl = "http://dynamit.us-west-2.elasticbeanstalk.com/save";
+    String tempServerUrl = "https://requestb.in/pz1t0gpz";
+
     public ReportService() {
     }
 
@@ -28,7 +34,7 @@ public class ReportService extends Service {
 
 
         String data = intent.getExtras().getString("data");
-        runPost("https://requestb.in/pz1t0gpz", data);
+        runPost(serverUrl, data);
         Log.d("send message", "success");
         return super.onStartCommand(intent, flags, startId);
 
