@@ -7,7 +7,10 @@ import android.util.Log;
 
 import static com.rosetta.dynamit.MainActivity.DATA_KEY;
 
+
 public class EventHandler extends BroadcastReceiver {
+
+    public static final String EVENT_KEY = "event";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -17,7 +20,7 @@ public class EventHandler extends BroadcastReceiver {
         String action = intent.getAction().toString();
         Log.d("event:", action);
         Intent reportServiceIntent = new Intent(context, ReportService.class);
-        reportServiceIntent.putExtra(DATA_KEY, action);
+        reportServiceIntent.putExtra(DATA_KEY, EVENT_KEY + " : " + action);
         context.startService(reportServiceIntent);
 
 

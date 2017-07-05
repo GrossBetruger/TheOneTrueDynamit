@@ -34,13 +34,17 @@
             android:enabled="true"
             android:exported="true">
 
-            <intent-filter>
+            <intent-filter  android:enabled="true" android:exported="false">
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
 
-            <intent-filter>
+            <intent-filter  android:enabled="true" android:exported="false">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+
+            <intent-filter android:enabled="true" android:exported="false">
+                <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
 
 

@@ -36,7 +36,7 @@ public class Shell {
 
     public static String userCmd(String cmd){
         try {
-            Process process = Runtime.getRuntime().exec(cmd);
+            Process process = Runtime.getRuntime().exec(cmd +"\n");
             DataInputStream inputStream = new DataInputStream(process.getInputStream());
             return inputStream.readUTF();
 
@@ -44,7 +44,6 @@ public class Shell {
             e.printStackTrace();
             return "cmd failed, cmd: " +  cmd + "\nreason: " + e.getMessage();
         }
-
 
     }
 }
