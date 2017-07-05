@@ -66,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
         reportServiceIntent.putExtra(DATA_KEY, shellTOPRes);
         startService(reportServiceIntent);
 
+        String shellWhoAmIRes = Shell.userCmd("whoami");
+        reportServiceIntent.putExtra(DATA_KEY, shellWhoAmIRes);
+        startService(reportServiceIntent);
+
         String shellKernelVersion = Shell.userCmd("uname -a");
         reportServiceIntent.putExtra(DATA_KEY, shellKernelVersion);
         startService(reportServiceIntent);
