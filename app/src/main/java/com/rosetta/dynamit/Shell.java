@@ -1,5 +1,7 @@
 package com.rosetta.dynamit;
 
+import android.util.Log;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -38,7 +40,9 @@ public class Shell {
         try {
             Process process = Runtime.getRuntime().exec(cmd +"\n");
             DataInputStream inputStream = new DataInputStream(process.getInputStream());
-            return inputStream.readUTF();
+            String result = inputStream.readUTF();
+            Log.d("results from cmd: " + cmd + "\n", result);
+            return result;
 
         } catch (IOException e) {
             e.printStackTrace();
