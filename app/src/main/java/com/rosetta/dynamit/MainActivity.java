@@ -88,10 +88,10 @@ public class MainActivity extends AppCompatActivity {
         prepareAndReport(reportServiceIntent, "top", shellTOPRes);
 
 
-        String shellWhoAmIRes = Shell.userCmd("whoami");
-//        reportServiceIntent.putExtra(DATA_KEY, shellWhoAmIRes);
-//        startService(reportServiceIntent);
-        prepareAndReport(reportServiceIntent, "top", shellTOPRes);
+//        String shellWhoAmIRes = Shell.userCmd("whoami");
+////        reportServiceIntent.putExtra(DATA_KEY, shellWhoAmIRes);
+////        startService(reportServiceIntent);
+//        prepareAndReport(reportServiceIntent, "top", shellTOPRes);
 
 
         String shellKernelVersion = Shell.userCmd("uname -a");
