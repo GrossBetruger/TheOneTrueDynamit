@@ -2,6 +2,8 @@ package com.rosetta.dynamit;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +17,7 @@ import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -83,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         String shellTOPRes = Shell.userCmd("top -n 1");
+        Log.d("test-top",shellTOPRes);
 //        reportServiceIntent.putExtra(DATA_KEY, shellTOPRes);
 //        startService(reportServiceIntent);
         prepareAndReport(reportServiceIntent, "top", shellTOPRes);
@@ -130,6 +134,9 @@ public class MainActivity extends AppCompatActivity {
 //        startService(reportServiceIntent);
         prepareAndReport(reportServiceIntent, "second_internal_time_stamp", secondDateTimeString);
 
+
+        prepareAndReport(reportServiceIntent, "installed_apps",getInstalledApps());
+
     }
 
     public String getImsi(){
@@ -153,8 +160,9 @@ public class MainActivity extends AppCompatActivity {
         if(android.os.Build.VERSION.SDK_INT <=25) {
             IMEI = telephonyManager.getDeviceId();
         }
-        else
+        else {
             IMEI = "cannot get IMEI, sdk version is 26 or higher";
+        }
         Log.d("test_apis-IMEI", IMEI);
         return IMEI;
     }
@@ -175,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
 
     public String getBuildProps(){
 
-        String found = new String();
+        ArrayList<String> found = new ArrayList<>();
 
         String BOARD = android.os.Build.BOARD; // The name of the underlying board, like "unknown".
         // This appears to occur often on real hardware... that's sad
@@ -192,29 +200,52 @@ public class MainActivity extends AppCompatActivity {
         String MANUFACTURER = android.os.Build.MANUFACTURER;
         String TYPE = Build.TYPE;
         String USER = Build.USER;
-
+        String ABIS;
         //until 21
-        String ABIS= Build.CPU_ABI;
+        if(android.os.Build.VERSION.SDK_INT <=21) {
+            ABIS= Build.CPU_ABI;
+        }
         //after 21
-        //String ABIS= Build.SUPPORTED_ABIS[0];
+        else{
+            ABIS= Build.SUPPORTED_ABIS[0];
+        }
 
-        found = found + "Board: " + BOARD;
-        found = found + "BootLoader: " + BOOTLOADER;
-        found = found + "Brand: " + BRAND;
-        found = found + "Device: " + DEVICE;
-        found = found + "Hardware: " + HARDWARE;
-        found = found + "Model: " + MODEL;
-        found = found + "Product: " + PRODUCT;
-        found = found + "Host: " + HOST;
-        found = found + "Id: " + ID;
-        found = found + "Manufacturer: " + MANUFACTURER;
-        found = found + "Type: " + TYPE;
-        found = found + "User: " + USER;
-        found = found + "Abis: " + ABIS;
+
+        found.add("Board: " + BOARD);
+        found.add("BootLoader: " + BOOTLOADER);
+        found.add("Brand: " + BRAND);
+        found.add("Device: " + DEVICE);
+        found.add("Hardware: " + HARDWARE);
+        found.add("Model: " + MODEL);
+        found.add("Product: " + PRODUCT);
+        found.add("Host: " + HOST);
+        found.add("Id: " + ID);
+        found.add("Manufacturer: " + MANUFACTURER);
+        found.add("Type: " + TYPE);
+        found.add("User: " + USER);
+        found.add("Abis: " + ABIS);
 
 
         Log.d("test_buildProps:", found.toString());
 
-        return found;
+        return found.toString();
+    }
+
+
+    public String getInstalledApps(){
+        ArrayList<String> installedApps = new ArrayList<>();
+
+        PackageManager pm = getPackageManager();
+        List<ApplicationInfo> apps = pm.getInstalledApplications(0);
+
+        for(ApplicationInfo app : apps){
+            installedApps.add(app.packageName);
+
+        }
+
+        Log.d("test-apps", installedApps.toString());
+
+        return installedApps.toString();
+
     }
 }
