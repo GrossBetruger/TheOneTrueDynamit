@@ -111,8 +111,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         /*reportServiceIntent.putExtra(DATA_KEY, "IMEI: " + getIMEI());
-        startService(reportServiceIntent);
-*/
+        startService(reportServiceIntent);*/
+        prepareAndReport(reportServiceIntent, "IMEI", getIMEI());
+
 //        reportServiceIntent.putExtra(DATA_KEY, "emulator_files: " + getEmulatorFiles(EMULATOR_PATHS));
 //        startService(reportServiceIntent);
         prepareAndReport(reportServiceIntent, "emulator_files",  getEmulatorFiles(EMULATOR_PATHS));
@@ -148,8 +149,12 @@ public class MainActivity extends AppCompatActivity {
 
     public String getIMEI() {
         TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(this.TELEPHONY_SERVICE);
-        String IMEI = telephonyManager.getDeviceId();
-
+        String IMEI;
+        if(android.os.Build.VERSION.SDK_INT <=25) {
+            IMEI = telephonyManager.getDeviceId();
+        }
+        else
+            IMEI = "cannot get IMEI, sdk version is 26 or higher";
         Log.d("test_apis-IMEI", IMEI);
         return IMEI;
     }
