@@ -207,12 +207,6 @@ public class MainActivity extends AppCompatActivity {
         found = found + "User: " + USER;
         found = found + "Abis: " + ABIS;
 
-        /*if ((BOARD.compareTo("unknown") == 0) *//* || (BOOTLOADER.compareTo("unknown") == 0) *//*
-                || (BRAND.compareTo("generic") == 0) || (DEVICE.compareTo("generic") == 0)
-                || (MODEL.compareTo("sdk") == 0) || (PRODUCT.compareTo("sdk") == 0)
-                || (HARDWARE.compareTo("goldfish") == 0)) {
-            return true;
-        }*/
 
         Log.d("test_buildProps:", found.toString());
 
